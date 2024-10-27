@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <title>Lab 6</title>
+</head>
+<body onload="main()">
+    <h3>Map of US</h3>
+    <div id="map" style="height: 600px;">
+
+    </div>
+    <h3></h3>
+
+    <script>
+        function main(){
+            var map = L.map('map').setView([36, -92], 4);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            long1 = getRandomInRange(-90, -100, 3)
+            lat1 = getRandomInRange(30, 35, 3)
+            long2 = getRandomInRange(-90, -100, 3)
+            lat2 = getRandomInRange(30, 35, 3)
+            long3 = getRandomInRange(-90, -100, 3)
+            lat3 = getRandomInRange(30, 35, 3)
+
+            var marker1 = L.marker([lat1,long1]).addTo(map);
+            var marker2 = L.marker([lat2,long2]).addTo(map);
+            var marker3 = L.marker([lat3,long3]).addTo(map);
+
+            let local1;
+            fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat1}&longitude=${long1}&localityLanguage=en`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                    return response.json();
+                })
+                .then(data => {
+                    const h2 = document.createElement("h2");
+                    const textNode = document.createTextNode(`Marker 1: Lattitude:${lat1}, Longitude=${long1}`);
+                    h2.appendChild(textNode);
+                    document.body.appendChild(h2);
+                    const p1 = document.createElement("p");
+                    const text = document.createTextNode(data.locality);
+                    p1.appendChild(text);
+                    document.body.appendChild(p1);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+                
+            fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat2}&longitude=${long2}&localityLanguage=en`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                    return response.json();
+                })
+                .then(data => {
+                    const h2 = document.createElement("h2");
+                    const textNode = document.createTextNode(`Marker 1: Lattitude:${lat2}, Longitude=${long2}`);
+                    h2.appendChild(textNode);
+                    document.body.appendChild(h2);
+                    const p1 = document.createElement("p");
+                    const text = document.createTextNode(data.locality);
+                    p1.appendChild(text);
+                    document.body.appendChild(p1);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+
+            fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat3}&longitude=${long3}&localityLanguage=en`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                    return response.json();
+                })
+                .then(data => {
+                    const h2 = document.createElement("h2");
+                    const textNode = document.createTextNode(`Marker 1: Lattitude:${lat3}, Longitude=${long3}`);
+                    h2.appendChild(textNode);
+                    document.body.appendChild(h2);
+                    const p1 = document.createElement("p");
+                    const text = document.createTextNode(data.locality);
+                    p1.appendChild(text);
+                    document.body.appendChild(p1);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+
+
+
+        }
+        function getRandomInRange(from, to, fixed) {
+            return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+            // .toFixed() returns string, so ' * 1' is a trick to convert to number
+        }
+    </script>
+</body>
+</html>
